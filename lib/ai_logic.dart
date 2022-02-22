@@ -112,7 +112,7 @@ int minimax(var board, int depth, bool isMax){
     return best;
   }
 }
-// This will return the best possible move for the player
+// This will return the best possible move for the AI opponent
 int findBestMove(var board)
 {
   int bestVal = -1000;
@@ -123,28 +123,15 @@ int findBestMove(var board)
   //6 7 8
 
 
-  // Traverse all cells, evaluate minimax function for
-  // all empty cells. And return the cell with optimal
-  // value.
 
   for (int j = 0; j<9; j++)
     {
-      // Check if cell is empty
     if (board[j]==empty)
       {
-      // Make the move
       board[j] = opponent;
-
-      // compute evaluation function for this
-      // move.
       int moveVal = minimax(board, 0, false);
-
-      // Undo the move
       board[j] = empty;
 
-      // If the value of the current move is
-      // more than the best value, then update
-      // best/
       if (moveVal > bestVal)
         {
           bestMove=j;
