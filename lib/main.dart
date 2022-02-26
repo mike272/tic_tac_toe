@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/ai_logic.dart';
 
@@ -51,10 +50,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  int playerWinsCounter=0;
-  int opponentWinsCOunter=0;
-  int drawsCounter=0;
-  int score=-1;
+  int playerWinsCounter = 0;
+  int opponentWinsCOunter = 0;
+  int drawsCounter = 0;
+  int score = -1;
   var fields = List.filled(9, empty);
 
   void _incrementCounter() {
@@ -67,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -84,67 +84,79 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Row(
         children: [
           AspectRatio(
-            aspectRatio:1,
-            child: GridView.count(crossAxisCount: 3,
-            children: [
-            for(int i=0; i<9; i++)  InkWell(onTap: (){
-              setState(() {
-                fields[i]=player;
-                runAI();
-              });
-            },
-            child: Center(
-              child: Text(fields[i])
-              // child: Text(fields[i]==1?"X":fields[i]==2?"O":""),
-            ),)
-          ],
-          ),),
+            aspectRatio: 1,
+            child: GridView.count(
+              crossAxisCount: 3,
+              children: [
+                for (int i = 0; i < 9; i++)
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        fields[i] = player;
+                        runAI();
+                      });
+                    },
+                    child: Center(child: Text(fields[i])
+                        // child: Text(fields[i]==1?"X":fields[i]==2?"O":""),
+                        ),
+                  )
+              ],
+            ),
+          ),
           Column(
             children: [
-              Text(score==100?"You won":score==-100?"You Lost":"Your turn"),
-              OutlinedButton(onPressed: (){
-                setState(() {
-                  fields = List.filled(9, empty);
-                  // drawsCounter=0;
-                  // playerWinsCounter=0;
-                  // opponentWinsCOunter=0;
-                });
-              }, child: Text("Reset")),
+              Text(score == 100
+                  ? "You won"
+                  : score == -100
+                      ? "You Lost"
+                      : "Your turn"),
+              OutlinedButton(
+                  onPressed: () {
+                    setState(() {
+                      fields = List.filled(9, empty);
+                      // drawsCounter=0;
+                      // playerWinsCounter=0;
+                      // opponentWinsCOunter=0;
+                    });
+                  },
+                  child: Text("Reset")),
               Text("Player score: ${playerWinsCounter}"),
               Text("AI score: ${opponentWinsCOunter}"),
               Text("Draws: ${drawsCounter}"),
-              OutlinedButton(onPressed: (){
-                setState(() {
-                  drawsCounter=0;
-                  playerWinsCounter=0;
-                  opponentWinsCOunter=0;
-                });
-              }, child: Text("Reset Counters")),
+              OutlinedButton(
+                  onPressed: () {
+                    setState(() {
+                      drawsCounter = 0;
+                      playerWinsCounter = 0;
+                      opponentWinsCOunter = 0;
+                    });
+                  },
+                  child: Text("Reset Counters")),
             ],
           )
         ],
       ),
 
-       // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
   void runAI() async {
     await Future.delayed(Duration(milliseconds: 200));
     int move = findBestMove(fields);
     setState(() {
-      fields[move]=opponent;
+      fields[move] = opponent;
     });
     int score = findWinningCondition(fields);
-      setState(() {
-        if(score==100){
-          opponentWinsCOunter++;
-        }else if(score==-100){
-          playerWinsCounter++;
-        }
-        // if(!ArePossibleMovesLeft(fields)){
-        //   drawsCounter++;
-        // }
-      });
+    setState(() {
+      if (score == 100) {
+        opponentWinsCOunter++;
+      } else if (score == -100) {
+        playerWinsCounter++;
+      }
+      if (!ArePossibleMovesLeft(fields)) {
+        drawsCounter++;
+      }
+    });
   }
 }
-
